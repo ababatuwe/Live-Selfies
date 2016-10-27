@@ -13,6 +13,7 @@ class PhotoCaptureDelegate: NSObject {
 	
 	var photoCaptureBegins: (() ->())? = .none
 	var photoCaptured: (()->())? = .none
+	var thumbnailCaptured: ((UIImage?)->())? = .none
 	
 	fileprivate let completionHandler: (PhotoCaptureDelegate, PHAsset)-> ()
 	
@@ -43,6 +44,15 @@ extension PhotoCaptureDelegate: AVCapturePhotoCaptureDelegate {
 		}
 		
 		photoData = AVCapturePhotoOutput.jpegPhotoDataRepresentation(forJPEGSampleBuffer: photoSampleBuffer, previewPhotoSampleBuffer: previewPhotoSampleBuffer)
+		
+		if let thumbnailCaptured = thumbnailCaptured, let previewPhotoSampleBuffer = previewPhotoSampleBuffer, let cvImageBuffer = CMSampleBufferGetImageBuffer(previewPhotoSampleBuffer) {
+			
+			let ciThumbnail = CIImage(cvImageBuffer: cvImageBuffer)
+			let context = CIContext(options: [kCIContextUseSoftwareRenderer: false])
+			let thumbnail = UIImage(cgImage: context.createCGImage(ciThumbnail, from: ciThumbnail.extent)!, scale: 2.0,	orientation: .right)
+			
+			thumbnailCaptured(thumbnail)
+		}
 	}
 	
 	func capture(_ captureOutput: AVCapturePhotoOutput, didFinishCaptureForResolvedSettings resolvedSettings: AVCaptureResolvedPhotoSettings, error: Error?) {
@@ -86,5 +96,13 @@ extension PhotoCaptureDelegate: AVCapturePhotoCaptureDelegate {
 					self.cleanup(asset: asset)
 			})
 		}
+	}
+	
+	func capture(_ captureOutput: AVCapturePhotoOutput, willCapturePhotoForResolvedSettings resolvedSettings: AVCaptureResolvedPhotoSettings) {
+		photoCaptureBegins?()
+	}
+	
+	func capture(_ captureOutput: AVCapturePhotoOutput, didCapturePhotoForResolvedSettings resolvedSettings: AVCaptureResolvedPhotoSettings) {
+		photoCaptured?()
 	}
 }

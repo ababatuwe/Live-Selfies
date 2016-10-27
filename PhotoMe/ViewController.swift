@@ -13,6 +13,8 @@ class ViewController: UIViewController {
 
 	@IBOutlet weak var cameraPreviewView: CameraPreviewView!
 	@IBOutlet weak var shutterButton: UIButton!
+	@IBOutlet weak var previewImageView: UIImageView!
+	@IBOutlet weak var thumbnailSwitch: UISwitch!
 	
 	fileprivate let session = AVCaptureSession()
 	fileprivate let sessionQueue = DispatchQueue(label: "com.agabankuuhe.PhotoMe")
@@ -121,6 +123,15 @@ extension ViewController {
 			photoSettings.flashMode = .off
 			photoSettings.isHighResolutionPhotoEnabled = true
 			
+			
+			if self.thumbnailSwitch.isOn && photoSettings.availablePreviewPhotoPixelFormatTypes.count > 0 {
+				photoSettings.previewPhotoFormat = [
+					kCVPixelBufferPixelFormatTypeKey as String: photoSettings.availablePreviewPhotoPixelFormatTypes.first!,
+					kCVPixelBufferWidthKey as String : 160,
+					kCVPixelBufferHeightKey as String : 160
+				]
+			}
+			
 			//Create the delegate and, in a cruel twist of fate, tell it to remove itself from memory when it’s finished.
 			let uniqueID = photoSettings.uniqueID
 			let photoCaptureDelegate = PhotoCaptureDelegate(){
@@ -130,6 +141,31 @@ extension ViewController {
 				self.sessionQueue.async {
 					[unowned self] in
 					self.photoCaptureDelegates[uniqueID] = .none
+				}
+			}
+			
+			photoCaptureDelegate.thumbnailCaptured = {[unowned self] image in
+				DispatchQueue.main.async {
+					self.previewImageView.image = image
+				}
+			}
+			
+			//When the capture begins, you blank out and fade back in to give a shutter effect and disable the shutter button.
+			photoCaptureDelegate.photoCaptureBegins = { [unowned self] in
+				DispatchQueue.main.async {
+					self.shutterButton.isEnabled = false
+					self.cameraPreviewView.cameraPreviewLayer.opacity = 0
+					UIView.animate(withDuration: 0.2) {
+						self.cameraPreviewView.cameraPreviewLayer.opacity = 1
+					}
+				}
+			}
+			
+			//When the capture is complete, the shutter button is enabled again.
+			
+			photoCaptureDelegate.photoCaptured = { [unowned self] in
+				DispatchQueue.main.async {
+					self.shutterButton.isEnabled = true
 				}
 			}
 			

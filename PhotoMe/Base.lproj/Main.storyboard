@@ -25,45 +25,72 @@
                                     <constraint firstAttribute="width" secondItem="lzY-Be-3cc" secondAttribute="height" multiplier="3:4" id="vZY-P9-eDZ"/>
                                 </constraints>
                             </view>
-                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ohh-cL-C0N">
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="zFQ-2o-uxh">
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ohh-cL-C0N">
+                                <frame key="frameInset" minY="606" width="375" height="61"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" id="zFQ-2o-uxh">
                                     <frame key="frameInset"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="q28-nK-ZBs">
-                                            <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eII-CO-D4B">
-                                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                    <state key="normal" title="Take Photo!"/>
-                                                    <connections>
-                                                        <action selector="handleShutterButtonTap:" destination="BYZ-38-t0r" eventType="touchUpInside" id="YB5-a3-Bxj"/>
-                                                    </connections>
-                                                </button>
-                                            </subviews>
-                                        </stackView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="q28-nK-ZBs" firstAttribute="top" secondItem="zFQ-2o-uxh" secondAttribute="top" constant="5" id="Bl5-f2-2Z6"/>
-                                        <constraint firstItem="q28-nK-ZBs" firstAttribute="centerX" secondItem="zFQ-2o-uxh" secondAttribute="centerX" id="Ths-Op-0JR"/>
-                                        <constraint firstAttribute="bottom" secondItem="q28-nK-ZBs" secondAttribute="bottom" constant="20" id="qVj-0K-Od4"/>
-                                    </constraints>
                                 </view>
                                 <blurEffect style="dark"/>
                             </visualEffectView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="q28-nK-ZBs" userLabel="Control Stack">
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eII-CO-D4B">
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <state key="normal" title="Take Photo!"/>
+                                        <connections>
+                                            <action selector="handleShutterButtonTap:" destination="BYZ-38-t0r" eventType="touchUpInside" id="YB5-a3-Bxj"/>
+                                        </connections>
+                                    </button>
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="EAV-mc-nNS" userLabel="Capture Stack">
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="d68-hB-jJI" userLabel="Option Stack">
+                                                <subviews>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="3Xf-Dy-jUw" userLabel="Thumbnail Stack">
+                                                        <subviews>
+                                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="UUP-ky-0ZV"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Capture Thumbnail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bf1-NQ-uti">
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                    </stackView>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="vTj-Yl-Oqg" userLabel="Preview Stack">
+                                                <subviews>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5qA-D1-00C">
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" secondItem="5qA-D1-00C" secondAttribute="height" multiplier="1:1" id="iOO-5U-xr5"/>
+                                                            <constraint firstAttribute="width" constant="80" id="kRT-KW-eyA"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="lzY-Be-3cc" secondAttribute="trailing" id="325-dy-mYQ"/>
                             <constraint firstItem="Ohh-cL-C0N" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="4x4-pf-5Jj"/>
+                            <constraint firstItem="q28-nK-ZBs" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="543" id="Dsx-59-4Rq"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Ohh-cL-C0N" secondAttribute="bottom" id="Jh4-1N-7BZ"/>
                             <constraint firstItem="lzY-Be-3cc" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="T4M-Gq-aI9"/>
+                            <constraint firstItem="q28-nK-ZBs" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="WA2-Ff-IhZ"/>
                             <constraint firstItem="lzY-Be-3cc" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="eGj-6n-u1f"/>
+                            <constraint firstAttribute="bottom" secondItem="q28-nK-ZBs" secondAttribute="bottom" constant="8" id="fYB-ze-XDz"/>
                             <constraint firstAttribute="trailing" secondItem="Ohh-cL-C0N" secondAttribute="trailing" id="yFy-H9-mbH"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="cameraPreviewView" destination="lzY-Be-3cc" id="h2D-6i-mPz"/>
+                        <outlet property="previewImageView" destination="5qA-D1-00C" id="07a-hI-Zk7"/>
                         <outlet property="shutterButton" destination="eII-CO-D4B" id="4Ne-jr-VWj"/>
+                        <outlet property="thumbnailSwitch" destination="UUP-ky-0ZV" id="XlU-Cg-iEn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
