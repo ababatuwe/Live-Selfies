@@ -20,21 +20,50 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lzY-Be-3cc" customClass="CameraPreviewView" customModule="PhotoMe" customModuleProvider="target">
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="lzY-Be-3cc" secondAttribute="height" multiplier="3:4" id="vZY-P9-eDZ"/>
                                 </constraints>
                             </view>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ohh-cL-C0N">
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="zFQ-2o-uxh">
+                                    <frame key="frameInset"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="q28-nK-ZBs">
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eII-CO-D4B">
+                                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                    <state key="normal" title="Take Photo!"/>
+                                                    <connections>
+                                                        <action selector="handleShutterButtonTap:" destination="BYZ-38-t0r" eventType="touchUpInside" id="YB5-a3-Bxj"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="q28-nK-ZBs" firstAttribute="top" secondItem="zFQ-2o-uxh" secondAttribute="top" constant="5" id="Bl5-f2-2Z6"/>
+                                        <constraint firstItem="q28-nK-ZBs" firstAttribute="centerX" secondItem="zFQ-2o-uxh" secondAttribute="centerX" id="Ths-Op-0JR"/>
+                                        <constraint firstAttribute="bottom" secondItem="q28-nK-ZBs" secondAttribute="bottom" constant="20" id="qVj-0K-Od4"/>
+                                    </constraints>
+                                </view>
+                                <blurEffect style="dark"/>
+                            </visualEffectView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="lzY-Be-3cc" secondAttribute="trailing" id="325-dy-mYQ"/>
+                            <constraint firstItem="Ohh-cL-C0N" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="4x4-pf-5Jj"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Ohh-cL-C0N" secondAttribute="bottom" id="Jh4-1N-7BZ"/>
                             <constraint firstItem="lzY-Be-3cc" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="T4M-Gq-aI9"/>
                             <constraint firstItem="lzY-Be-3cc" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="eGj-6n-u1f"/>
+                            <constraint firstAttribute="trailing" secondItem="Ohh-cL-C0N" secondAttribute="trailing" id="yFy-H9-mbH"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="cameraPreviewView" destination="lzY-Be-3cc" id="h2D-6i-mPz"/>
+                        <outlet property="shutterButton" destination="eII-CO-D4B" id="4Ne-jr-VWj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -42,4 +71,5 @@
             <point key="canvasLocation" x="136.80000000000001" y="137.18140929535232"/>
         </scene>
     </scenes>
+    <color key="tintColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
 </document>

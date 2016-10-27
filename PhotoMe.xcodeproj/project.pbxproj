@@ -13,6 +13,7 @@
 		407563BD1DC233C500DAA735 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 407563BC1DC233C500DAA735 /* Assets.xcassets */; };
 		407563C01DC233C500DAA735 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 407563BE1DC233C500DAA735 /* LaunchScreen.storyboard */; };
 		407563C81DC235FD00DAA735 /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407563C71DC235FD00DAA735 /* CameraPreviewView.swift */; };
+		407563CA1DC276F400DAA735 /* PhotoCaptureDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407563C91DC276F400DAA735 /* PhotoCaptureDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		407563BF1DC233C500DAA735 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		407563C11DC233C500DAA735 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		407563C71DC235FD00DAA735 /* CameraPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
+		407563C91DC276F400DAA735 /* PhotoCaptureDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCaptureDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 			children = (
 				407563B51DC233C500DAA735 /* AppDelegate.swift */,
 				407563B71DC233C500DAA735 /* ViewController.swift */,
+				407563C91DC276F400DAA735 /* PhotoCaptureDelegate.swift */,
 				407563B91DC233C500DAA735 /* Main.storyboard */,
 				407563BC1DC233C500DAA735 /* Assets.xcassets */,
 				407563BE1DC233C500DAA735 /* LaunchScreen.storyboard */,
@@ -142,6 +145,7 @@
 			files = (
 				407563B81DC233C500DAA735 /* ViewController.swift in Sources */,
 				407563B61DC233C500DAA735 /* AppDelegate.swift in Sources */,
+				407563CA1DC276F400DAA735 /* PhotoCaptureDelegate.swift in Sources */,
 				407563C81DC235FD00DAA735 /* CameraPreviewView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
