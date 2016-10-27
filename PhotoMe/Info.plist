@@ -31,8 +31,12 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string> PhotoMe needs the camera to take photos</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string> PhotoMe needs the microphone to record audio with live photos</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string> PhotoMe will save photos in the Photo Library</string>
 </dict>
 </plist>
