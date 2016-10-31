@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import Photos
 
 class ViewController: UIViewController {
 
@@ -23,6 +24,7 @@ class ViewController: UIViewController {
 	fileprivate let sessionQueue = DispatchQueue(label: "com.agabankuuhe.PhotoMe")
 	fileprivate let photoOutput = AVCapturePhotoOutput()
 	fileprivate var currentLivePhotoCaptures: Int = 0
+	fileprivate var lastAsset: PHAsset?
 	
 	fileprivate var photoCaptureDelegates = [Int64: PhotoCaptureDelegate]()
 	
@@ -129,6 +131,12 @@ class ViewController: UIViewController {
 		// 6
 		session.commitConfiguration()
 	}
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if let editor = segue.destination as? PhotoEditingViewController {
+			editor.asset = lastAsset
+		}
+	}
 
 }
 
@@ -175,6 +183,7 @@ extension ViewController {
 				self.sessionQueue.async {
 					[unowned self] in
 					self.photoCaptureDelegates[uniqueID] = .none
+					self.lastAsset = asset
 				}
 			}
 			

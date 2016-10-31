@@ -77,6 +77,12 @@
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="vTj-Yl-Oqg" userLabel="Preview Stack">
                                                 <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QNG-RK-Uef">
+                                                        <state key="normal" title="Edit"/>
+                                                        <connections>
+                                                            <segue destination="3ed-rY-8SN" kind="presentation" id="4Xz-ob-nGg"/>
+                                                        </connections>
+                                                    </button>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5qA-D1-00C">
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="5qA-D1-00C" secondAttribute="height" multiplier="1:1" id="iOO-5U-xr5"/>
@@ -114,7 +120,58 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="136.80000000000001" y="137.18140929535232"/>
+            <point key="canvasLocation" x="-158" y="136"/>
+        </scene>
+        <!--Photo Editing View Controller-->
+        <scene sceneID="uTZ-Xw-4oN">
+            <objects>
+                <viewController id="3ed-rY-8SN" customClass="PhotoEditingViewController" customModule="PhotoMe" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="AID-eb-ghc"/>
+                        <viewControllerLayoutGuide type="bottom" id="UJc-NB-ono"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="7mn-uk-Cmh">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="H7o-VG-vqs">
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dHp-NN-Puf" customClass="PHPLivePhotoView">
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="dHp-NN-Puf" secondAttribute="height" multiplier="3:4" id="82F-kb-1jK"/>
+                                        </constraints>
+                                    </view>
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="moe-b1-BHA">
+                                        <frame key="frameInset" minY="520" width="375" height="97"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                        <state key="normal" title="Comicify"/>
+                                        <connections>
+                                            <action selector="handleComicifyTapped:" destination="3ed-rY-8SN" eventType="touchUpInside" id="GRO-ps-qBy"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OPi-9E-g1P">
+                                        <frame key="frameInset" minY="637" width="375" height="30"/>
+                                        <state key="normal" title="Done"/>
+                                        <connections>
+                                            <action selector="handleDoneTapped:" destination="3ed-rY-8SN" eventType="touchUpInside" id="4sg-C2-4Ix"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="H7o-VG-vqs" firstAttribute="top" secondItem="7mn-uk-Cmh" secondAttribute="top" id="3Ut-bH-8z1"/>
+                            <constraint firstAttribute="trailing" secondItem="H7o-VG-vqs" secondAttribute="trailing" id="5O1-P9-p7u"/>
+                            <constraint firstItem="H7o-VG-vqs" firstAttribute="leading" secondItem="7mn-uk-Cmh" secondAttribute="leading" id="8Dm-Mh-W9k"/>
+                            <constraint firstItem="UJc-NB-ono" firstAttribute="top" secondItem="H7o-VG-vqs" secondAttribute="bottom" id="kxQ-Si-k7v"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OyN-C7-LPo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="539.5" y="136.5"/>
         </scene>
     </scenes>
     <color key="tintColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
