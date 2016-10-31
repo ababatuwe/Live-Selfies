@@ -14,7 +14,9 @@ class PhotoCaptureDelegate: NSObject {
 	var photoCaptureBegins: (() ->())? = .none
 	var photoCaptured: (()->())? = .none
 	var thumbnailCaptured: ((UIImage?)->())? = .none
+	var capturingLivePhoto: ((Bool)->())? = .none // closure which the view controller will use to update the UI to indicate if live photo capture is happening
 	
+	fileprivate var livePhotoMovieURL: URL? = .none // store the URL of the movie file that accompanies the live photo.
 	fileprivate let completionHandler: (PhotoCaptureDelegate, PHAsset)-> ()
 	
 	fileprivate var photoData: Data? = .none
@@ -55,7 +57,9 @@ extension PhotoCaptureDelegate: AVCapturePhotoCaptureDelegate {
 		}
 	}
 	
-	func capture(_ captureOutput: AVCapturePhotoOutput, didFinishCaptureForResolvedSettings resolvedSettings: AVCaptureResolvedPhotoSettings, error: Error?) {
+	func capture(_ captureOutput: AVCapturePhotoOutput,
+	             didFinishCaptureForResolvedSettings resolvedSettings: AVCaptureResolvedPhotoSettings,
+	             error: Error?) {
 		
 		guard error == nil, let photoData = photoData else {
 			print("Error \(error) or no data")
@@ -80,6 +84,13 @@ extension PhotoCaptureDelegate: AVCapturePhotoCaptureDelegate {
 				
 				creationRequest.addResource(with: .photo, data: photoData, options: .none)
 				
+				// bundles in the video data with the photo data you’re already sending, making your photo live. Setting the shouldMoveFile option means that the video file will be removed from the temporary directory for you
+				if let livePhotoMovieURL = self.livePhotoMovieURL {
+					let movieResourceOptions = PHAssetResourceCreationOptions()
+					movieResourceOptions.shouldMoveFile = true
+					creationRequest.addResource(with: .pairedVideo, fileURL: livePhotoMovieURL, options: movieResourceOptions)
+				}
+				
 				assetIdentifier = placeholder?.localIdentifier
 				
 				}, completionHandler: {
@@ -98,11 +109,35 @@ extension PhotoCaptureDelegate: AVCapturePhotoCaptureDelegate {
 		}
 	}
 	
-	func capture(_ captureOutput: AVCapturePhotoOutput, willCapturePhotoForResolvedSettings resolvedSettings: AVCaptureResolvedPhotoSettings) {
+	func capture(_ captureOutput: AVCapturePhotoOutput,
+	             willCapturePhotoForResolvedSettings resolvedSettings: AVCaptureResolvedPhotoSettings) {
 		photoCaptureBegins?()
+		if resolvedSettings.livePhotoMovieDimensions.width > 0 && resolvedSettings.livePhotoMovieDimensions.height > 0 {
+			capturingLivePhoto?(true)
+		}
 	}
 	
 	func capture(_ captureOutput: AVCapturePhotoOutput, didCapturePhotoForResolvedSettings resolvedSettings: AVCaptureResolvedPhotoSettings) {
 		photoCaptured?()
+	}
+	
+	// called when the video capture is complete
+	func capture(_ captureOutput: AVCapturePhotoOutput,
+	             didFinishRecordingLivePhotoMovieForEventualFileAt outputFileURL: URL,
+	             resolvedSettings: AVCaptureResolvedPhotoSettings) {
+		capturingLivePhoto?(false)
+	}
+	
+	// called when the processing of the video capture is complete
+	func capture(_ captureOutput: AVCapturePhotoOutput,
+	             didFinishProcessingLivePhotoToMovieFileAt outputFileURL: URL,
+	             duration: CMTime,
+	             photoDisplay photoDisplayTime: CMTime,
+	             resolvedSettings: AVCaptureResolvedPhotoSettings,
+	             error: Error?) {
+		if let error = error {
+			print("Error creating live photo video: \(error)")
+		}
+		livePhotoMovieURL = outputFileURL
 	}
 }

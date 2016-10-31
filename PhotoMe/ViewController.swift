@@ -15,10 +15,14 @@ class ViewController: UIViewController {
 	@IBOutlet weak var shutterButton: UIButton!
 	@IBOutlet weak var previewImageView: UIImageView!
 	@IBOutlet weak var thumbnailSwitch: UISwitch!
+	@IBOutlet weak var livePhotoSwitch: UISwitch!
+	@IBOutlet weak var capturingLabel: UILabel!
+	
 	
 	fileprivate let session = AVCaptureSession()
 	fileprivate let sessionQueue = DispatchQueue(label: "com.agabankuuhe.PhotoMe")
 	fileprivate let photoOutput = AVCapturePhotoOutput()
+	fileprivate var currentLivePhotoCaptures: Int = 0
 	
 	fileprivate var photoCaptureDelegates = [Int64: PhotoCaptureDelegate]()
 	
@@ -76,6 +80,21 @@ class ViewController: UIViewController {
 			//3
 			let videoDeviceInput = try AVCaptureDeviceInput(device: videoDevice)
 			
+			do {
+				let audioDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeAudio)
+				let audioDeviceInput = try AVCaptureDeviceInput(device: audioDevice)
+				
+				if session.canAddInput(audioDeviceInput) {
+					session.addInput(audioDeviceInput)
+				} else {
+					print("Couldn't add audio device to the session")
+					return
+				}
+			} catch {
+				print("Unable to create audio device input: \(error)")
+				return
+			}
+			
 			//4
 			if session.canAddInput(videoDeviceInput) {
 				session.addInput(videoDeviceInput)
@@ -97,6 +116,12 @@ class ViewController: UIViewController {
 		if session.canAddOutput(photoOutput){
 			session.addOutput(photoOutput)
 			photoOutput.isHighResolutionCaptureEnabled = true
+			
+			photoOutput.isLivePhotoCaptureEnabled = photoOutput.isLivePhotoCaptureSupported
+			
+			DispatchQueue.main.async {
+				self.livePhotoSwitch.isEnabled = self.photoOutput.isLivePhotoCaptureSupported
+			}
 		} else {
 			print("Unable to add photo output")
 			return
@@ -108,6 +133,7 @@ class ViewController: UIViewController {
 }
 
 extension ViewController {
+	
 	fileprivate func capturePhoto() {
 		// Output connection needs to know what orientation the camera is in.
 		let cameraPreviewLayerOrientation = cameraPreviewView.cameraPreviewLayer.connection.videoOrientation
@@ -132,7 +158,15 @@ extension ViewController {
 				]
 			}
 			
-			//Create the delegate and, in a cruel twist of fate, tell it to remove itself from memory when it’s finished.
+			// additional configuration needed to support live photo capture
+			// During capture the video file will be recorded into this unique name in the temporary directory.
+			if self.livePhotoSwitch.isOn {
+				let movieFileName = UUID().uuidString
+				let moviePath = (NSTemporaryDirectory() as NSString).appendingPathComponent("\(movieFileName).mov")
+				photoSettings.livePhotoMovieFileURL = URL(fileURLWithPath: moviePath)
+				
+			}
+			// Create the delegate and, in a cruel twist of fate, tell it to remove itself from memory when it’s finished.
 			let uniqueID = photoSettings.uniqueID
 			let photoCaptureDelegate = PhotoCaptureDelegate(){
 				[unowned self]
@@ -150,7 +184,7 @@ extension ViewController {
 				}
 			}
 			
-			//When the capture begins, you blank out and fade back in to give a shutter effect and disable the shutter button.
+			// When the capture begins, you blank out and fade back in to give a shutter effect and disable the shutter button.
 			photoCaptureDelegate.photoCaptureBegins = { [unowned self] in
 				DispatchQueue.main.async {
 					self.shutterButton.isEnabled = false
@@ -161,11 +195,22 @@ extension ViewController {
 				}
 			}
 			
-			//When the capture is complete, the shutter button is enabled again.
+			// When the capture is complete, the shutter button is enabled again.
 			
 			photoCaptureDelegate.photoCaptured = { [unowned self] in
 				DispatchQueue.main.async {
 					self.shutterButton.isEnabled = true
+				}
+			}
+			
+			// Live photo UI updates
+			photoCaptureDelegate.capturingLivePhoto = { currentlyCapturing in
+				DispatchQueue.main.async {
+					[unowned self] in
+					self.currentLivePhotoCaptures += currentlyCapturing ? 1 : -1
+					UIView.animate(withDuration: 0.2) {
+						self.capturingLabel.isHidden = (self.currentLivePhotoCaptures == 0)
+					}
 				}
 			}
 			
